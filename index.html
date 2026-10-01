@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free online JSON to SQL converter. Generate SQL INSERT and CREATE TABLE statements from JSON directly in your browser.">
+  <meta name="theme-color" content="#4f46e5">
+  <meta property="og:title" content="JSON to SQL Converter - Convert JSON to SQL Online">
+  <meta property="og:description" content="Generate SQL INSERT and CREATE TABLE statements from JSON directly in your browser.">
+  <meta property="og:type" content="website">
+  <title>JSON to SQL Converter - Convert JSON to SQL Online</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#" aria-label="JSON to SQL Converter home">
+        <span class="brand-glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="12" cy="5.5" rx="6.5" ry="2.75" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M5.5 5.5v6c0 1.52 2.91 2.75 6.5 2.75s6.5-1.23 6.5-2.75v-6M5.5 11.5v6c0 1.52 2.91 2.75 6.5 2.75s6.5-1.23 6.5-2.75v-6" stroke="currentColor" stroke-width="1.7"/>
+          </svg>
+        </span>
+        <span>JSON to SQL Converter</span>
+      </a>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" type="button" id="themeToggle" aria-label="Switch to dark mode" aria-pressed="false">
+          <span class="theme-toggle-icon" aria-hidden="true">
+            <svg class="sun-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 4V2.75M12 21.25V20M17.66 6.34l.88-.88M5.46 18.54l.88-.88M20 12h1.25M2.75 12H4M17.66 17.66l.88.88M5.46 5.46l.88.88M12 16.25A4.25 4.25 0 1 0 12 7.75a4.25 4.25 0 0 0 0 8.5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.2 14.85A7.75 7.75 0 0 1 9.15 3.8 8.65 8.65 0 1 0 20.2 14.85Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span id="themeLabel">Light</span>
+        </button>
+        <a class="studio-logo-link" href="#" aria-label="Ethereal Studios">
+          <img src="assets/logo-icon.png" alt="Ethereal Studios logo">
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">Browser-only database utility</p>
+      <h1 id="page-title">JSON to SQL Converter</h1>
+      <p class="intro-text">Convert JSON objects and arrays into SQL INSERT and CREATE TABLE statements instantly.</p>
+      <p class="privacy-chip">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3.25 5.75 5.6v5.25c0 4.1 2.6 7.78 6.25 9.05 3.65-1.27 6.25-4.95 6.25-9.05V5.6L12 3.25Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="m9.25 12.05 1.85 1.85 3.85-4.05" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Your JSON stays in your browser. Nothing is uploaded.
+      </p>
+    </section>
+
+    <section class="converter-shell" aria-label="JSON to SQL converter">
+      <section class="config-panel" aria-label="Conversion settings">
+        <div class="field">
+          <label for="tableName">Table name</label>
+          <input id="tableName" type="text" value="users" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="outputType">Output type</label>
+          <select id="outputType">
+            <option value="insert">INSERT statements</option>
+            <option value="create">CREATE TABLE</option>
+            <option value="both">CREATE TABLE + INSERT</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="dialect">SQL dialect</label>
+          <select id="dialect">
+            <option value="mysql">MySQL</option>
+            <option value="postgres">PostgreSQL</option>
+            <option value="sqlite">SQLite</option>
+            <option value="generic">Generic SQL</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="insertStyle">Insert style</label>
+          <select id="insertStyle">
+            <option value="single">Single INSERT</option>
+            <option value="multiple">Multiple INSERT statements</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="nestedMode">Nested values</label>
+          <select id="nestedMode">
+            <option value="json">Convert to JSON string</option>
+            <option value="reject">Reject nested values</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="primaryKey">Primary key column</label>
+          <select id="primaryKey">
+            <option value="">None</option>
+          </select>
+        </div>
+        <label class="check-field">
+          <input type="checkbox" id="detectDates">
+          <span>Detect date strings</span>
+        </label>
+      </section>
+
+      <section class="action-panel" aria-label="Conversion actions">
+        <button class="button button-primary" type="button" id="convertButton">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 7h8M5 12h14M5 17h8M16 5l3 3-3 3M16 13l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Convert to SQL
+        </button>
+        <button class="button" type="button" id="formatButton">Format JSON</button>
+        <button class="button" type="button" id="minifyButton">Minify JSON</button>
+        <button class="button" type="button" id="sampleButton">Load Sample</button>
+        <button class="button button-soft-danger" type="button" id="clearButton">Clear</button>
+      </section>
+
+      <div class="error-box" id="errorBox" role="alert" hidden>
+        <strong id="errorTitle">Invalid JSON</strong>
+        <span id="errorMessage"></span>
+      </div>
+
+      <section class="stats-grid" aria-label="Conversion statistics">
+        <article class="stat-card">
+          <span class="stat-label">Records</span>
+          <output class="stat-value" id="recordCount">0</output>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Columns</span>
+          <output class="stat-value" id="columnCount">0</output>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">SQL Statements</span>
+          <output class="stat-value" id="statementCount">0</output>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Input Size</span>
+          <output class="stat-value" id="inputSize">0 B</output>
+        </article>
+      </section>
+
+      <section class="editor-grid" aria-label="JSON and SQL editors">
+        <article class="editor-panel">
+          <div class="editor-header">
+            <label for="jsonInput">JSON Input</label>
+            <span>Ctrl/Cmd + Enter to convert</span>
+          </div>
+          <textarea id="jsonInput" spellcheck="false" placeholder='[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "active": true
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "active": false
+  }
+]'></textarea>
+        </article>
+
+        <article class="editor-panel">
+          <div class="editor-header editor-header-actions">
+            <label for="sqlOutput">SQL Output</label>
+            <div class="mini-actions" aria-label="SQL output actions">
+              <button type="button" id="copyButton">Copy SQL</button>
+              <button type="button" id="downloadButton">Download .sql</button>
+              <button type="button" id="selectAllButton">Select All</button>
+            </div>
+          </div>
+          <textarea id="sqlOutput" spellcheck="false" readonly placeholder="Generated SQL will appear here..."></textarea>
+          <p class="review-note">Review generated SQL before executing it on a database, especially in production environments.</p>
+        </article>
+      </section>
+
+      <p class="local-notice">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.75 10V8.25a4.25 4.25 0 0 1 8.5 0V10M6.75 10h10.5A1.75 1.75 0 0 1 19 11.75v6.5A1.75 1.75 0 0 1 17.25 20H6.75A1.75 1.75 0 0 1 5 18.25v-6.5A1.75 1.75 0 0 1 6.75 10Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        All conversion happens locally in your browser. Your JSON data is never uploaded.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="assets/ethereal-studios-logo.png" alt="Ethereal Studios" class="footer-logo">
+      <p>JSON to SQL Converter &copy; Ethereal Studios. Fast, private and free.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
