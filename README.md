@@ -2,7 +2,7 @@
 
 A free, browser-only tool that converts JSON objects and arrays into SQL `INSERT` and `CREATE TABLE` statements. Your data never leaves your browser — nothing is uploaded.
 
-Built by **Ethereal Studios**.
+Built by [Ethereal Studios](https://builtbyethereal.com/).
 
 ## Features
 
